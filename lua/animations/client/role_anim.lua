@@ -21,7 +21,7 @@ local function ThickLine(sx, sy, ex, ey, thickness, dir)
     end
 end
 
-hook.Add("TTT2_RoleTypeSet", "TTT2Anim", function(ply)
+hook.Add("TTT2_RoleTypeSet", "TTT2RoleAnim", function(ply)
     local rd = ply:GetRoleData()
     local tmp = LANG.GetTranslation(rd.name)
     
@@ -32,11 +32,12 @@ hook.Add("TTT2_RoleTypeSet", "TTT2Anim", function(ply)
     end
 end)
 
-hook.Add("TTTEndRound", "TTT2ResetAnimData", function()
+hook.Add("TTTEndRound", "TTT2ResetRoleAnimData", function()
     oldRoundRole = nil
+    receivedNewRole = nil
 end)
 
-hook.Add("HUDPaint", "TTT2NewRoleAnim", function()
+hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
     local client = LocalPlayer()
 
     if client:IsActive() and oldRoundRole ~= receivedNewRole then

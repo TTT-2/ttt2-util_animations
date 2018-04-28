@@ -23,7 +23,7 @@ hook.Add("PlayerAuthedCacheReady", "TTT2ConnectAnim", function(steamid64, name)
     table.insert(animQueue, {id = steamid64, n = name})
 end)
 
-hook.Add("HUDPaint", "TTT2NewRoleAnim", function()
+hook.Add("HUDPaint", "TTT2PaintConnectAnim", function()
     if #animQueue > 0 then
         local steamid64 = animQueue[1].id
         local name = animQueue[1].n
