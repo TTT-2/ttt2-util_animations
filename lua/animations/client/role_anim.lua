@@ -2,7 +2,7 @@ local surface = surface
 local draw = draw
 
 -- Fonts
-surface.CreateFont("ReceivedNewRole", {font = "Trebuchet24", size = 64, weight = 1000})
+surface.CreateFont("ReceivedNewRole", {font = "Trebuchet24", size = 52, weight = 1000})
 
 local receivedNewRole
 local oldRoundRole
@@ -45,7 +45,7 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
         local multiplicator = CubicBezier(0.1, 0.8, 0.9, 0.2, (CurTime() - animStart) / duration)
         
         local sx, ex = 0, ScrW()
-        local y1, y2 = ScrH() / 5 * 2, ScrH() / 5 * 3
+        local y1, y2 = ScrH() / 9 * 4, ScrH() / 9 * 5
         
         -- rect
         local a = animColor.a
