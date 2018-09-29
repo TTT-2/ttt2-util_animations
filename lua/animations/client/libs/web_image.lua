@@ -12,7 +12,7 @@ file.CreateDir("downloaded_assets")
 local exists = file.Exists
 local write = file.Write
 local fetch = http.Fetch
-local white = Color( 255, 255, 255 )
+local white = Color(255, 255, 255)
 local surface = surface
 local crc = util.CRC
 local _error = Material("error")
@@ -27,10 +27,10 @@ function fetch_asset(url)
 		return mats[url]
 	end
 
-	local crc = crc(url)
+	local crc2 = crc(url)
 
-	if exists("downloaded_assets/" .. crc .. ".png", "DATA") then
-		mats[url] = Material("data/downloaded_assets/" .. crc .. ".png")
+	if exists("downloaded_assets/" .. crc2 .. ".png", "DATA") then
+		mats[url] = Material("data/downloaded_assets/" .. crc2 .. ".png")
 
 		return mats[url]
 	end
@@ -38,14 +38,14 @@ function fetch_asset(url)
 	mats[url] = _error
 
 	fetch(url, function(data)
-		write("downloaded_assets/" .. crc .. ".png", data)
-		mats[url] = Material("data/downloaded_assets/" .. crc .. ".png")
+		write("downloaded_assets/" .. crc2 .. ".png", data)
+		mats[url] = Material("data/downloaded_assets/" .. crc2 .. ".png")
 	end)
 
 	return mats[url]
 end
 
-function fetchAvatarAsset( id64, size )
+function fetchAvatarAsset(id64, size)
 	id64 = id64 or "BOT"
 	size = size == "medium" and "medium" or size == "small" and "" or size == "large" and "full" or ""
 
@@ -55,47 +55,47 @@ function fetchAvatarAsset( id64, size )
 
 	fetchedavatars[ id64 .. " " .. size ] = id64 == "BOT" and "http://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/09/09962d76e5bd5b91a94ee76b07518ac6e240057a_full.jpg" or "http://i.imgur.com/uaYpdq7.png"
 	if id64 == "BOT" then return end
-	fetch("http://steamcommunity.com/profiles/" .. id64 .. "/?xml=1", function( body )
+	fetch("http://steamcommunity.com/profiles/" .. id64 .. "/?xml=1", function(body)
 		local link = body:match("https://steamcdn.-a.akamaihd.net/steamcommunity/public/images/avatars/.-jpg")
-        
+
 		if not link then return end
 
-		fetchedavatars[ id64 .. " " .. size ] = link:Replace( ".jpg", ( size ~= "" and "_" .. size or "") .. ".jpg")
+		fetchedavatars[ id64 .. " " .. size ] = link:Replace(".jpg", (size ~= "" and "_" .. size or "") .. ".jpg")
 	end)
 end
 
-hook.Add("PlayerAuthed", "TTT2AvatarCache", function(steamid64, name)
-    fetch_asset(fetchAvatarAsset(steamid64, "medium")) -- caching
-    
-    hook.Run("PlayerAuthedCacheReady", steamid64, name)
+hook.Add("TTT2PlayerAuthed", "TTT2AvatarCache", function(ply)
+	fetch_asset(fetchAvatarAsset(ply:SteamID64(), "medium")) -- caching
+
+	hook.Run("TTT2PlayerAuthedCacheReady", ply)
 end)
 
-function draw.WebImage( url, x, y, width, height, color, angle, cornerorigin )
+function draw.WebImage(url, x, y, width, height, color, angle, cornerorigin)
 	color = color or white
 
-	surface.SetDrawColor( color.r, color.g, color.b, color.a )
-	surface.SetMaterial( fetch_asset( url ) )
+	surface.SetDrawColor(color.r, color.g, color.b, color.a)
+	surface.SetMaterial(fetch_asset(url))
 	if not angle then
-		surface.DrawTexturedRect( x, y, width, height)
+		surface.DrawTexturedRect(x, y, width, height)
 	else
 		if not cornerorigin then
-			surface.DrawTexturedRectRotated( x, y, width, height, angle )
+			surface.DrawTexturedRectRotated(x, y, width, height, angle)
 		else
-			surface.DrawTexturedRectRotated( x + width / 2, y + height / 2, width, height, angle )
+			surface.DrawTexturedRectRotated(x + width / 2, y + height / 2, width, height, angle)
 		end
 	end
 end
 
-function draw.SeamlessWebImage( url, parentwidth, parentheight, xrep, yrep, color )
+function draw.SeamlessWebImage(url, parentwidth, parentheight, xrep, yrep, color)
 	color = color or white
-	local xiwx, yihy = math.ceil( parentwidth/xrep ), math.ceil( parentheight/yrep )
+	local xiwx, yihy = math.ceil(parentwidth / xrep), math.ceil(parentheight / yrep)
 	for x = 0, xrep - 1 do
 		for y = 0, yrep - 1 do
-			draw.WebImage( url, x*xiwx, y*yihy, xiwx, yihy, color )
+			draw.WebImage(url, x * xiwx, y * yihy, xiwx, yihy, color)
 		end
 	end
 end
 
-function draw.SteamAvatar( avatar, res, x, y, width, height, color, ang, corner )
-	draw.WebImage( fetchAvatarAsset( avatar, res ), x, y, width, height, color, ang, corner )
+function draw.SteamAvatar(avatar, res, x, y, width, height, color, ang, corner)
+	draw.WebImage(fetchAvatarAsset(avatar, res), x, y, width, height, color, ang, corner)
 end
