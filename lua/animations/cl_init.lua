@@ -7,5 +7,5 @@ include("animations/client/connect_anim.lua")
 net.Receive("TTT2PlayerAuthedSharing", function(len)
 	local ply = net.ReadEntity()
 
-	hook.Run("TTT2PlayerAuthed", ply, ply:SteamID(), ply:EntIndex())
+	hook.Run("TTT2PlayerAuthed", ply)
 end)
