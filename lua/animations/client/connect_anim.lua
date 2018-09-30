@@ -15,17 +15,20 @@ local padding = 5
 local animStart = 0
 local animQueue = {}
 
-hook.Add("TTT2PlayerAuthedCacheReady", "TTT2ConnectAnim", function(ply)
+hook.Add("TTT2PlayerAuthedCacheReady", "TTT2ConnectAnim", function(steamid, name)
 	if #animQueue == 0 then
 		animStart = CurTime()
 	end
 
-	table.insert(animQueue, ply)
+	table.insert(animQueue, {s = steamid, n = name})
 end)
 
 hook.Add("HUDPaint", "TTT2PaintConnectAnim", function()
 	if #animQueue > 0 then
-		local ply = animQueue[1]
+		local res = animQueue[1]
+		local steamid = res.s
+		local name = res.n
+
 		local multiplicator = (CurTime() - animStart) / duration
 		local rest = duration - holdTime
 
@@ -50,12 +53,12 @@ hook.Add("HUDPaint", "TTT2PaintConnectAnim", function()
 		surface.DrawRect(pos.x, pos.y, width, height)
 
 		-- avatar
-		draw.SteamAvatar(ply:SteamID64(), "medium", pos.x + padding, pos.y + padding, size, size, Color(255, 255, 255, 255))
+		draw.SteamAvatar(steamid, "medium", pos.x + padding, pos.y + padding, size, size, Color(255, 255, 255, 255))
 
 		local tmp = width - 2 * padding - size
 
 		-- Draw current class state
-		draw.SimpleText(ply:Nick(), "ConnectToTTT2", pos.x + (2 * padding + size) + tmp / 2, pos.y + padding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
+		draw.SimpleText(name, "ConnectToTTT2", pos.x + (2 * padding + size) + tmp / 2, pos.y + padding, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER)
 
 		if animStart + duration <= CurTime() then
 			table.remove(animQueue, 1)
@@ -70,5 +73,5 @@ concommand.Add("TestConAnim", function(ply)
 		animStart = CurTime()
 	end
 
-	table.insert(animQueue, ply)
+	table.insert(animQueue, {s = ply:SteamID64(), n = ply:Nick()})
 end)

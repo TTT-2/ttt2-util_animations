@@ -64,10 +64,10 @@ function fetchAvatarAsset(id64, size)
 	end)
 end
 
-hook.Add("TTT2PlayerAuthed", "TTT2AvatarCache", function(ply)
-	fetch_asset(fetchAvatarAsset(ply:SteamID64(), "medium")) -- caching
+hook.Add("TTT2PlayerAuthed", "TTT2AvatarCache", function(steamid, name)
+	fetch_asset(fetchAvatarAsset(steamid, "medium")) -- caching
 
-	hook.Run("TTT2PlayerAuthedCacheReady", ply)
+	hook.Run("TTT2PlayerAuthedCacheReady", steamid, name)
 end)
 
 function draw.WebImage(url, x, y, width, height, color, angle, cornerorigin)
