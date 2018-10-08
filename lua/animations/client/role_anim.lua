@@ -22,7 +22,7 @@ local function ThickLine(sx, sy, ex, ey, thickness, dir)
 end
 
 hook.Add("TTT2_RoleTypeSet", "TTT2RoleAnim", function(ply)
-	local rd = ply:GetRoleData()
+	local rd = ply:GetSubRoleData()
 	local tmp = LANG.GetTranslation(rd.name)
 
 	if tmp ~= receivedNewRole then
@@ -41,7 +41,7 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
 	local client = LocalPlayer()
 
 	if client:IsActive() and oldRoundRole ~= receivedNewRole then
-		local center = Vector(ScrW() / 2, ScrH() / 2, 0)
+		local center = Vector(ScrW() * 0.5, ScrH() * 0.5, 0)
 		local multiplicator = CubicBezier(0.1, 0.8, 0.9, 0.2, (CurTime() - animStart) / duration)
 
 		local sx, ex = 0, ScrW()
@@ -64,9 +64,10 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
 		surface.SetDrawColor(255, 255, 255, a)
 
 		local thickness = 5
+		local _tmp = ex * multiplicator
 
-		ThickLine(sx, y1, ex * multiplicator, y1, thickness, true)
-		ThickLine(ex, y2, ex - (ex * multiplicator), y2, thickness, false)
+		ThickLine(sx, y1, _tmp, y1, thickness, true)
+		ThickLine(ex, y2, ex - _tmp, y2, thickness, false)
 
 		-- Draw current class state
 		ShadowedText(receivedNewRole, "ReceivedNewRole", center.x, center.y - 32, Color(255, 255, 255, a), TEXT_ALIGN_CENTER)

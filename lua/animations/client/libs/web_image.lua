@@ -81,7 +81,7 @@ function draw.WebImage(url, x, y, width, height, color, angle, cornerorigin)
 		if not cornerorigin then
 			surface.DrawTexturedRectRotated(x, y, width, height, angle)
 		else
-			surface.DrawTexturedRectRotated(x + width / 2, y + height / 2, width, height, angle)
+			surface.DrawTexturedRectRotated(x + width * 0.5, y + height * 0.5, width, height, angle)
 		end
 	end
 end

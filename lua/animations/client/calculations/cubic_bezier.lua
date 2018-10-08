@@ -40,7 +40,7 @@ end
 local function binarySubdivide(aX, aA, aB, mX1, mX2)
 	local currentX, currentT, i = 0, 0, 0
 
-	currentT = aA + (aB - aA) / 2.0
+	currentT = aA + (aB - aA) * 0.5
 	currentX = calcBezier(currentT, mX1, mX2) - aX
 
 	if currentX > 0.0 then
@@ -52,7 +52,7 @@ local function binarySubdivide(aX, aA, aB, mX1, mX2)
 	while math.abs(currentX) > SUBDIVISION_PRECISION and (i + 1) < SUBDIVISION_MAX_ITERATIONS do
 		i = i + 1
 
-		currentT = aA + (aB - aA) / 2.0
+		currentT = aA + (aB - aA) * 0.5
 		currentX = calcBezier(currentT, mX1, mX2) - aX
 
 		if currentX > 0.0 then
