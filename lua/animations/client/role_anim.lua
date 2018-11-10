@@ -21,7 +21,7 @@ local function ThickLine(sx, sy, ex, ey, thickness, dir)
 	end
 end
 
-hook.Add("TTT2RoleTypeSet", "TTT2RoleAnim", function(ply)
+hook.Add("TTT2UpdateSubrole", "TTT2RoleAnim", function(ply, old, new)
 	local rd = ply:GetSubRoleData()
 	local tmp = LANG.GetTranslation(rd.name)
 
