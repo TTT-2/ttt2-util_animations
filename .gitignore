@@ -49,3 +49,5 @@ Temporary Items
 #
 .ftpconfig
 .ftpignore
+addon.json
+*.gma
