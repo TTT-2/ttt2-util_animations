@@ -45,14 +45,13 @@ hook.Add("HUDPaint", "TTT2PaintConnectAnim", function()
 		end
 
 		local pos = Vector(ScrW(), ScrH() * 0.8, 0) -- 1 / 5 * 4 = 0.8
-		pos.x = pos.x - width * multiplicator
+		pos.x = math.floor(pos.x - width * multiplicator) -- improve performance
 
 		local doublePadding = 2 * padding
 		local size = height - doublePadding
 
 		-- rect
 		surface.SetDrawColor(0, 0, 0, 120)
-
 		surface.DrawRect(pos.x, pos.y, width, height)
 
 		-- avatar

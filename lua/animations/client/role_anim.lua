@@ -55,14 +55,16 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
 		end
 
 		surface.SetDrawColor(animColor.r, animColor.g, animColor.b, a)
-
 		surface.DrawRect(sx, y1, ex, y2 - y1)
 
 		-- lines
-		surface.SetDrawColor(255, 255, 255, a)
+		surface.SetDrawColor(255, 255, 255, math.floor(a))
 
 		local thickness = 5
 		local _tmp = ex * multiplicator
+
+		-- improve calculations
+		_tmp = math.floor(_tmp)
 
 		ThickLine(sx, y1, _tmp, y1, thickness, true)
 		ThickLine(ex, y2, ex - _tmp, y2, thickness, false)
