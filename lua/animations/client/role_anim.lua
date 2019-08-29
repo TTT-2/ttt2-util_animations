@@ -43,7 +43,8 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
 		local multiplicator = CubicBezier(0.1, 0.8, 0.9, 0.2, (CurTime() - animStart) / duration)
 
 		local sx, ex = 0, ScrW()
-		local y1, y2 = ScrH() / 9 * 4, ScrH() / 9 * 5
+		local y1, y2 = ScrH() / 9 * 1, ScrH() / 9 * 2 --height of the banner (y1 beeing topmost y2 being bottom most.)
+		local yt = (y2 + y1) / 2 -- A helper value which centers the text height based on y1 and y2
 
 		-- rect
 		local a = animColor.a
@@ -70,7 +71,7 @@ hook.Add("HUDPaint", "TTT2PaintRoleAnim", function()
 		ThickLine(ex, y2, ex - _tmp, y2, thickness, false)
 
 		-- Draw current class state
-		ShadowedText(receivedRole, "ReceivedRole", center.x, center.y - 32, Color(255, 255, 255, a), TEXT_ALIGN_CENTER)
+		ShadowedText(receivedRole, "ReceivedRole", center.x, yt - 32, Color(255, 255, 255, a), TEXT_ALIGN_CENTER)
 
 		if animStart + duration <= CurTime() then
 			receivedRole = nil
